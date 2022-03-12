@@ -12,7 +12,7 @@ type User struct {
 	First_Name    string             `json:"first_name"`
 	Last_Name     string             `json:"last_name"`
 	Email         string             `json:"email"`
-	Phone_Number  string             `json:"phone_number"`
+	Phone_Number  int                `json:"phone_number"`
 	Password      string             `json:"password"`
 	Token         string             `json:"token"`
 	Refresh_Token string             `json:"refresh_token"`
