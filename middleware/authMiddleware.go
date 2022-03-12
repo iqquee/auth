@@ -8,7 +8,7 @@ import (
 )
 
 //func authentication validates the token and authorizes the user
-func Authentication(c *gin.Context) {
+func Authorization(c *gin.Context) {
 	clientToken := c.Request.Header.Get("token")
 	if clientToken == "" {
 		msg := "No Authorization header provided"

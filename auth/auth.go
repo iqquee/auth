@@ -78,7 +78,7 @@ func SignUp(c *gin.Context) {
 
 }
 
-func Signin(c *gin.Context) {
+func SignIn(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
