@@ -108,7 +108,7 @@ func SignIn(c *gin.Context) {
 		return
 	}
 
-	passwordIsValid, msg := utils.VerifyPassword(foundUser.Password, user.Password)
+	passwordIsValid, msg := utils.VerifyPassword(user.Password, foundUser.Password)
 	if !passwordIsValid {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
 		return
