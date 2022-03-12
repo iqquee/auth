@@ -11,7 +11,22 @@ Easy way to get an authetication system up and running in your application with 
     MongoDB_URI=<mondodb uri>
 
 ### Note that I am using the Gin framework
+
 ### Declear the user signup route
+### The user model for signup
+    type User struct {
+	ID            primitive.ObjectID `json:"_id" bson:"_id"`
+	User_id       string             `json:"user_id"`
+	First_Name    string             `json:"first_name"`
+	Last_Name     string             `json:"last_name"`
+	Email         string             `json:"email"`
+	Phone_Number  int                `json:"phone_number"`
+	Password      string             `json:"password"`
+	Token         string             `json:"token"`
+	Refresh_Token string             `json:"refresh_token"`
+	Created_At    time.Time          `json:"created_at"`
+	Updated_At    time.Time          `json:"updated_at"`
+}
 #### Import `"github.com/hisyntax/auth/auth"`
     Example code 
     {
@@ -22,6 +37,11 @@ Easy way to get an authetication system up and running in your application with 
 
 
 ### Declear the user signin route
+### The user model for signup
+    type Login struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
+}
 #### Import `"github.com/hisyntax/auth/auth"`
     Example code 
     {
@@ -31,6 +51,15 @@ Easy way to get an authetication system up and running in your application with 
     Using the auth package, access the SignIn method with `auth.SignIn`
 
 ### You can also get information of a specific user
+
+### This is user Model which is returned
+    type PublicUser struct {
+	ID           primitive.ObjectID `json:"_id" bson:"_id"`
+	First_Name   string             `json:"first_name"`
+	Last_Name    string             `json:"last_name"`
+	Email        string             `json:"email"`
+	Phone_Number string             `json:"phone_number"`
+}
 #### Import "github.com/hisyntax/auth/user"
     Example code 
     {
@@ -40,6 +69,14 @@ Easy way to get an authetication system up and running in your application with 
     Using the auth package, access the GetPublicUser method with `user.GetPublicUser`
 
 ### You can also get information of a all users
+### This is user Model which is returned
+    type PublicUser struct {
+	ID           primitive.ObjectID `json:"_id" bson:"_id"`
+	First_Name   string             `json:"first_name"`
+	Last_Name    string             `json:"last_name"`
+	Email        string             `json:"email"`
+	Phone_Number string             `json:"phone_number"`
+}
 #### Import "github.com/hisyntax/auth/user"
     Example code 
     {
