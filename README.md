@@ -2,7 +2,12 @@
 Easy way to get an authetication system up and running in your application with Go
 ### Download package with...
     go get github.com/hisyntax/auth
-### Create a .env file in your project root directory then copy the key value pairs in the example.env file and assign appropraite values
+### Create a .env file in your project root directory then copy the key value pairs below and assign appropraite values
+    DATABASE_NAME=<database name>
+    USER_COL=<collection name>
+    PORT=<port number>
+    SECRET_KEY=<secret key>
+    MongoDB_URI=<mondodb uri>
 
 ### Import `"github.com/hisyntax/auth/auth"`
 ### Declear the user signup route
