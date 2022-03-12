@@ -60,6 +60,7 @@ Easy way to get an authetication system up and running in your application with 
 	Email        string             `json:"email"`
 	Phone_Number string             `json:"phone_number"`
 }
+###  You have to pass the user email from the header `email : user@example.com`
 #### Import "github.com/hisyntax/auth/user"
     Example code 
     {
@@ -87,6 +88,7 @@ Easy way to get an authetication system up and running in your application with 
 
 
 ### If you need a users authorization for certain parts of the application like create post and so on, this package also has another method called Authorization
+###  You have to pass the user token generated for the user from the header `token : userToken`
 #### Import `"github.com/hisyntax/auth/middleware"`
     Example code 
     {
