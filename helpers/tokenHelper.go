@@ -19,7 +19,6 @@ type SignedDetails struct {
 	jwt.StandardClaims
 }
 
-// GenerateAllTokens generates both teh detailed token and refresh token
 func GenerateAllTokens(userEmail string, uid string) (signedToken string, signedRefreshToken string, err error) {
 	claims := &SignedDetails{
 		Email: userEmail,
@@ -49,7 +48,6 @@ func GenerateAllTokens(userEmail string, uid string) (signedToken string, signed
 	return token, refreshToken, err
 }
 
-//ValidateToken validates the jwt token
 func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	token, err := jwt.ParseWithClaims(
 		signedToken,
@@ -80,11 +78,8 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 	return claims, msg
 }
 
-//UpdateAllTokens renews the user tokens when they login
 func UpdateAllTokens(signedToken string, signedRefreshToken string, userId string) {
-	//ope n a database conection to the mongo database
 	var ctx, cancel = context.WithTimeout(context.Background(), 10*time.Second)
-	//close that connection after the resources in not in use
 	defer cancel()
 
 	var updateObj primitive.D
