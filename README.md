@@ -59,4 +59,4 @@ Easy way to get an authetication system up and running in your application with 
     Using the auth package, access the Authentication method with `middleware.Authentication`
 
 ### Run you application and you have your endpoints running and working
-### Currently this package uses a predefined User Model which you can edit to fit into you needs but I would be working on that so it does not use a predefined user model anymore (It would instead use the user Model you defined). Contributions to this package are welcomed as it is open source.
+### Currently this package uses a predefined User Model which you can overwrite to fit into you needs but I would be working on that so it does not use a predefined user model anymore (It would instead use the user Model you defined). Contributions to this package are welcomed as it is open source.
