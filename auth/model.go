@@ -20,14 +20,6 @@ type User struct {
 	Updated_At    time.Time          `json:"updated_at"`
 }
 
-type PublicUser struct {
-	ID           primitive.ObjectID `json:"_id" bson:"_id"`
-	First_Name   string             `json:"first_name"`
-	Last_Name    string             `json:"last_name"`
-	Email        string             `json:"email"`
-	Phone_Number string             `json:"phone_number"`
-}
-
 type Login struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
