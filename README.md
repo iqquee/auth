@@ -1,5 +1,6 @@
 # auth
 Easy way to get an authetication system up and running in your application with Go
+
 ### Download package with...
     go get github.com/hisyntax/auth
 ### Create a .env file in your project root directory then copy the key value pairs below and assign appropraite values
@@ -8,6 +9,8 @@ Easy way to get an authetication system up and running in your application with 
     PORT=<port number>
     SECRET_KEY=<secret key>
     MongoDB_URI=<mondodb uri>
+
+### Note that I am using the Gin framework
 
 ### Import `"github.com/hisyntax/auth/auth"`
 ### Declear the user signup route
