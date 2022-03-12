@@ -7,10 +7,9 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/hisyntax/auth/database"
+	"github.com/hisyntax/auth/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
@@ -19,10 +18,6 @@ type SignedDetails struct {
 	Uid   string
 	jwt.StandardClaims
 }
-
-var userCollection *mongo.Collection = database.OpenCollection(database.Client, os.Getenv("USER_COLLECTION_NAME"))
-
-var SECRET_KEY string = os.Getenv("SECRET_KEY")
 
 // GenerateAllTokens generates both teh detailed token and refresh token
 func GenerateAllTokens(userEmail string, uid string) (signedToken string, signedRefreshToken string, err error) {
@@ -40,11 +35,14 @@ func GenerateAllTokens(userEmail string, uid string) (signedToken string, signed
 		},
 	}
 
-	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(SECRET_KEY))
-	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(SECRET_KEY))
-
+	token, err := jwt.NewWithClaims(jwt.SigningMethodHS256, claims).SignedString([]byte(os.Getenv("SECRET_KEY")))
 	if err != nil {
 		log.Panic(err)
+		return
+	}
+	refreshToken, err := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims).SignedString([]byte(os.Getenv("SECRET_KEY")))
+	if err != nil {
+		log.Println(err)
 		return
 	}
 
@@ -57,7 +55,7 @@ func ValidateToken(signedToken string) (claims *SignedDetails, msg string) {
 		signedToken,
 		&SignedDetails{},
 		func(token *jwt.Token) (interface{}, error) {
-			return []byte(SECRET_KEY), nil
+			return []byte(os.Getenv("SECRET_KEY")), nil
 		},
 	)
 
@@ -103,7 +101,7 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 		Upsert: &upsert,
 	}
 
-	_, err := userCollection.UpdateOne(
+	_, err := utils.UserCollection.UpdateOne(
 		ctx,
 		filter,
 		bson.D{
@@ -113,7 +111,7 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 	)
 
 	if err != nil {
-		log.Panic(err)
+		log.Println(err)
 		return
 	}
 }
