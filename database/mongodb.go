@@ -18,30 +18,26 @@ var (
 	Validate                         = validator.New()
 )
 
-func InitDB() *mongo.Client {
+func InitMongoDB() *mongo.Client {
 	if err := godotenv.Load(); err != nil {
 		log.Println("Error loading .env file")
 	}
 
 	Mongodb := os.Getenv("MongoDB_URI")
 	client, err := mongo.NewClient(options.Client().ApplyURI(Mongodb))
-	if err != nil {
-		log.Fatal(err)
-	}
+	CheckErr(err)
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	err = client.Connect(ctx)
-	if err != nil {
-		log.Fatal(err)
-	}
+	CheckErr(err)
 
-	fmt.Println("Successfully Connected to the mongodb")
+	fmt.Println("Successfully connected to the mongodb server")
 	return client
 }
 
-var Client *mongo.Client = InitDB()
+var Client *mongo.Client = InitMongoDB()
 
 func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	var collection *mongo.Collection = (*mongo.Collection)(client.Database(os.Getenv("DATABASE_NAME")).Collection(collectionName))

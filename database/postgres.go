@@ -28,20 +28,22 @@ var (
 	p_dbname   = os.Getenv("POSTGRES_DB_NAME")
 )
 
-func SetupDB() *gorm.DB {
+func InitPostgresQlDB() *gorm.DB {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s "+"password=%s dbname=%s sslmode=disable", p_host, p_port, p_user, p_password, p_dbname)
 	db, err := gorm.Open("postgres", psqlInfo)
 	CheckErr(err)
 
 	db.AutoMigrate(&UserPsql{})
 	defer db.Close()
-	fmt.Println("Successfully connected!")
+	fmt.Println("Successfully connected to postgresql server")
 
 	return db
 }
 
-func CheckErr(err error) {
+func CheckErr(err error) error {
 	if err != nil {
 		log.Fatal(err)
+		return err
 	}
+	return nil
 }
