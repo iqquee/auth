@@ -6,19 +6,45 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/hisyntax/auth/database"
 	"github.com/hisyntax/auth/helpers"
-	"github.com/hisyntax/auth/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/gin-gonic/gin"
+)
+
+func HashPassword(password string) string {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	if err != nil {
+		log.Panic(err)
+	}
+	return string(bytes)
+}
+
+func VerifyPassword(userPassword string, providedPassword string) (bool, string) {
+	err := bcrypt.CompareHashAndPassword([]byte(providedPassword), []byte(userPassword))
+	check := true
+	msg := ""
+
+	if err != nil {
+		msg = "Incorrect Password Please try again"
+		check = false
+	}
+
+	return check, msg
+}
+
+const (
+	Mongodb    = "Mongodb"
+	Postgresdb = "Postgresdb"
 )
 
 func SignUp(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
-	var user User
+	var user database.User
 	if err := c.BindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
@@ -26,7 +52,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	if err := utils.Validate.Struct(&user); err != nil {
+	if err := database.Validate.Struct(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -34,7 +60,7 @@ func SignUp(c *gin.Context) {
 	}
 
 	filter := bson.D{{Key: "email", Value: user.Email}}
-	count, err := utils.UserCollection.CountDocuments(ctx, filter)
+	count, err := database.UserCollection.CountDocuments(ctx, filter)
 	if err != nil {
 		log.Panic(err)
 		msg := "Error occured while checking for the Email"
@@ -52,7 +78,7 @@ func SignUp(c *gin.Context) {
 		return
 	}
 
-	password := utils.HashPassword(user.Password)
+	password := HashPassword(user.Password)
 	user.Password = password
 
 	user.Created_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
@@ -64,7 +90,7 @@ func SignUp(c *gin.Context) {
 	user.Token = token
 	user.Refresh_Token = refreshToken
 
-	insertNum, insertErr := utils.UserCollection.InsertOne(ctx, user)
+	insertNum, insertErr := database.UserCollection.InsertOne(ctx, user)
 	if insertErr != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": insertErr.Error(),
@@ -82,8 +108,8 @@ func SignIn(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	var user Login
-	var foundUser User
+	var user database.Login
+	var foundUser database.User
 
 	if err := c.BindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -92,7 +118,7 @@ func SignIn(c *gin.Context) {
 		return
 	}
 
-	if err := utils.Validate.Struct(user); err != nil {
+	if err := database.Validate.Struct(user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(),
 		})
@@ -100,7 +126,7 @@ func SignIn(c *gin.Context) {
 	}
 
 	filter := bson.D{{Key: "email", Value: user.Email}}
-	err := utils.UserCollection.FindOne(ctx, filter).Decode(&foundUser)
+	err := database.UserCollection.FindOne(ctx, filter).Decode(&foundUser)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -108,7 +134,7 @@ func SignIn(c *gin.Context) {
 		return
 	}
 
-	passwordIsValid, msg := utils.VerifyPassword(user.Password, foundUser.Password)
+	passwordIsValid, msg := VerifyPassword(user.Password, foundUser.Password)
 	if !passwordIsValid {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": msg})
 		return

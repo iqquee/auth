@@ -6,8 +6,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/hisyntax/auth/database"
+
 	"github.com/golang-jwt/jwt"
-	"github.com/hisyntax/auth/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -96,7 +97,7 @@ func UpdateAllTokens(signedToken string, signedRefreshToken string, userId strin
 		Upsert: &upsert,
 	}
 
-	_, err := utils.UserCollection.UpdateOne(
+	_, err := database.UserCollection.UpdateOne(
 		ctx,
 		filter,
 		bson.D{

@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hisyntax/auth/utils"
+	"github.com/hisyntax/auth/database"
 	"go.mongodb.org/mongo-driver/bson"
 )
 
@@ -17,7 +17,7 @@ func GetPublicUsers(c *gin.Context) {
 	var foundUser []PublicUser
 
 	userFilter := bson.D{{}}
-	userCol, err := utils.UserCollection.Find(ctx, userFilter)
+	userCol, err := database.UserCollection.Find(ctx, userFilter)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -52,7 +52,7 @@ func GetPublicUser(c *gin.Context) {
 	}
 
 	userFilter := bson.D{{Key: "email", Value: userEmail}}
-	userCol := utils.UserCollection.FindOne(ctx, userFilter)
+	userCol := database.UserCollection.FindOne(ctx, userFilter)
 	if err := userCol.Err(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),

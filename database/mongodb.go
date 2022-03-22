@@ -2,13 +2,20 @@ package database
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"os"
 	"time"
 
+	"github.com/go-playground/validator"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+var (
+	UserCollection *mongo.Collection = OpenCollection(Client, os.Getenv("USER_COL"))
+	Validate                         = validator.New()
 )
 
 func InitDB() *mongo.Client {
@@ -30,6 +37,7 @@ func InitDB() *mongo.Client {
 		log.Fatal(err)
 	}
 
+	fmt.Println("Successfully Connected to the mongodb")
 	return client
 }
 
