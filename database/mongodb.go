@@ -25,13 +25,17 @@ func InitMongoDB() *mongo.Client {
 
 	Mongodb := os.Getenv("MongoDB_URI")
 	client, err := mongo.NewClient(options.Client().ApplyURI(Mongodb))
-	CheckErr(err)
+	if err != nil {
+		log.Println(err)
+	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	err = client.Connect(ctx)
-	CheckErr(err)
+	if err != nil {
+		log.Println(err)
+	}
 
 	fmt.Println("Successfully connected to the mongodb server")
 	return client
