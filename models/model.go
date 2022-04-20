@@ -36,3 +36,22 @@ type Login struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
+
+type MongoDataModel struct {
+	Model interface{}
+	Const ModelConst
+}
+type ModelConst struct {
+	ID            primitive.ObjectID `json:"_id"`
+	User_Id       string             `json:"user_id"`
+	Email         string             `json:"email"`
+	Password      string             `json:"password"`
+	Token         string             `json:"token"`
+	Refresh_Token string             `json:"refresh_token"`
+	Created_At    time.Time          `json:"created_at"`
+	Updated_At    time.Time          `json:"updated_at"`
+	Deleted_At    time.Time          `json:"deleted_at"`
+}
+
+type MySqlModel struct {
+}

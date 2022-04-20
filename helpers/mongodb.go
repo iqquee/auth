@@ -20,7 +20,7 @@ type SignedDetails struct {
 	jwt.StandardClaims
 }
 
-func GenerateAllTokens(userEmail string, uid string) (signedToken string, signedRefreshToken string, err error) {
+func GenerateAllTokens(userEmail, uid string) (signedToken string, signedRefreshToken string, err error) {
 	claims := &SignedDetails{
 		Email: userEmail,
 		Uid:   uid,

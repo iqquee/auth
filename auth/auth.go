@@ -23,7 +23,12 @@ var (
 	MySqldb = os.Getenv("MYSQL")
 )
 
-func SignUp(c *gin.Context) {
+func SignUp(c *gin.Context, model interface{}) {
+
+	userModel := models.MongoDataModel{
+		Model: model,
+		Const: models.ModelConst{},
+	}
 	//check if no database was chosen
 	if Mongodb == "" && MySqldb == "" {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -37,7 +42,8 @@ func SignUp(c *gin.Context) {
 		defer cancel()
 
 		// var user database.User
-		var user models.MongoUser
+		// var user models.MongoUser
+		user := userModel
 		if err := c.BindJSON(&user); err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -52,7 +58,7 @@ func SignUp(c *gin.Context) {
 			return
 		}
 
-		filter := bson.D{{Key: "email", Value: user.Email}}
+		filter := bson.D{{Key: "email", Value: user.Const.Email}}
 		count, err := database.UserCollection.CountDocuments(ctx, filter)
 		if err != nil {
 			log.Panic(err)
@@ -71,17 +77,17 @@ func SignUp(c *gin.Context) {
 			return
 		}
 
-		password := interfaces.HashPassword(user.Password)
-		user.Password = password
+		password := interfaces.HashPassword(user.Const.Password)
+		user.Const.Password = password
 
-		user.Created_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		user.Updated_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
-		user.ID = primitive.NewObjectID()
-		user.User_id = user.ID.Hex()
+		user.Const.Created_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+		user.Const.Updated_At, _ = time.Parse(time.RFC3339, time.Now().Format(time.RFC3339))
+		user.Const.ID = primitive.NewObjectID()
+		user.Const.User_Id = user.Const.ID.Hex()
 
-		token, refreshToken, _ := helpers.GenerateAllTokens(user.Email, user.User_id)
-		user.Token = token
-		user.Refresh_Token = refreshToken
+		token, refreshToken, _ := helpers.GenerateAllTokens(user.Const.Email, user.Const.User_Id)
+		user.Const.Token = token
+		user.Const.Refresh_Token = refreshToken
 
 		insertNum, insertErr := database.UserCollection.InsertOne(ctx, user)
 		if insertErr != nil {
