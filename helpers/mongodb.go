@@ -6,7 +6,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/hisyntax/auth/database"
+	"github.com/iqquee/auth/database"
 
 	"github.com/golang-jwt/jwt"
 	"go.mongodb.org/mongo-driver/bson"

@@ -8,10 +8,10 @@ import (
 	"os"
 	"time"
 
-	"github.com/hisyntax/auth/database"
-	"github.com/hisyntax/auth/helpers"
-	"github.com/hisyntax/auth/interfaces"
-	"github.com/hisyntax/auth/models"
+	"github.com/iqquee/auth/database"
+	"github.com/iqquee/auth/helpers"
+	"github.com/iqquee/auth/interfaces"
+	"github.com/iqquee/auth/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 

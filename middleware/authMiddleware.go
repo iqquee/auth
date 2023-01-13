@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/hisyntax/auth/helpers"
+	"github.com/iqquee/auth/helpers"
 )
 
-//func authentication validates the token and authorizes the user
+// func authentication validates the token and authorizes the user
 func Authorization(c *gin.Context) {
 	clientToken := c.Request.Header.Get("token")
 	if clientToken == "" {

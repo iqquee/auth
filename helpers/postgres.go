@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt"
-	"github.com/hisyntax/auth/database"
+	"github.com/iqquee/auth/database"
 )
 
 var jwtKey = []byte(os.Getenv("JWT_SECRET_KEY"))

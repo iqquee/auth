@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/hisyntax/auth/models"
+	"github.com/iqquee/auth/models"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )

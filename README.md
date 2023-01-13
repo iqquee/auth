@@ -2,7 +2,7 @@
 Easy way to get an authetication system up and running in your application with Go
 
 ### Download package with...
-    go get github.com/hisyntax/auth
+    go get github.com/iqquee/auth
 ### Create a .env file in your project root directory then copy the key value pairs below and assign appropraite values
     DATABASE_NAME=<database name>
     USER_COL=<collection name>
@@ -27,7 +27,7 @@ Easy way to get an authetication system up and running in your application with 
 	Created_At    time.Time          `json:"created_at"`
 	Updated_At    time.Time          `json:"updated_at"`
 }
-#### Import `"github.com/hisyntax/auth/auth"`
+#### Import `"github.com/iqquee/auth/auth"`
     Example code 
     {
         r.POST("signup", auth.SignUp)
@@ -42,7 +42,7 @@ Easy way to get an authetication system up and running in your application with 
 	Email    string `json:"email"`
 	Password string `json:"password"`
 }
-#### Import `"github.com/hisyntax/auth/auth"`
+#### Import `"github.com/iqquee/auth/auth"`
     Example code 
     {
         r.POST("signin", auth.SignIn)
@@ -63,7 +63,7 @@ Easy way to get an authetication system up and running in your application with 
 ###  You have to pass the user email from the header 
     email is the Key
     user@something.com is the value
-#### Import "github.com/hisyntax/auth/user"
+#### Import "github.com/iqquee/auth/user"
     Example code 
     {
         r.GET("user", user.GetPublicUser)
@@ -80,7 +80,7 @@ Easy way to get an authetication system up and running in your application with 
 	Email        string             `json:"email"`
 	Phone_Number string             `json:"phone_number"`
 }
-#### Import "github.com/hisyntax/auth/user"
+#### Import "github.com/iqquee/auth/user"
     Example code 
     {
         r.GET("users", user.GetPublicUsers)
@@ -94,7 +94,7 @@ Easy way to get an authetication system up and running in your application with 
     token is the Key 
     generatedUserToken is the Value
     
-#### Import `"github.com/hisyntax/auth/middleware"`
+#### Import `"github.com/iqquee/auth/middleware"`
     Example code 
     {
         r.POST("").Use(middleware.Authentication)
